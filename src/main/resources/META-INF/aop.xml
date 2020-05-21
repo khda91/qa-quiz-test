@@ -1,0 +1,12 @@
+<!DOCTYPE aspectj PUBLIC
+        "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+    <weaver>
+        <include within="io.github.khda91.natera.qa.quiz..*"/>
+        <include within="io.qameta.allure..*"/>
+        <exclude within="io.github.khda91.natera.qa.quiz.aspects..*"/>
+    </weaver>
+    <aspects>
+        <aspect name="io.github.khda91.natera.qa.quiz.aspects.AllureStepLoggerAspect"/>
+    </aspects>
+</aspectj>

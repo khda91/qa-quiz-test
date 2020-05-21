@@ -10,6 +10,7 @@ public class TestModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(ApiConfigurationProperty.class).toProvider(ApiConfigurationPropertyProvider.class).asEagerSingleton();
-        bind(TriangleService.class).toProvider(TriangleServiceProvider.class);
+        bind(TriangleService.class).toProvider(TriangleServiceProvider.class).asEagerSingleton();
+
     }
 }

@@ -1,4 +1,4 @@
-package io.github.khda91.natera.qa.quiz.tests.utils;
+package io.github.khda91.natera.qa.quiz.utils;
 
 import io.github.khda91.natera.qa.quiz.model.triangle.Triangle;
 import lombok.AccessLevel;

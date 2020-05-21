@@ -2,16 +2,16 @@ package io.github.khda91.natera.qa.quiz.tests;
 
 import io.github.khda91.natera.qa.quiz.model.triangle.PerimeterAreaResult;
 import io.github.khda91.natera.qa.quiz.model.triangle.Triangle;
-import io.github.khda91.natera.qa.quiz.model.triangle.TriangleBody;
-import io.github.khda91.natera.qa.quiz.tests.utils.TriangleUtils;
+import io.github.khda91.natera.qa.quiz.utils.TriangleUtils;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import retrofit2.Response;
 
 import static io.github.khda91.natera.qa.quiz.services.api.enums.StatusCode.OK;
-import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Triangle Perimeter Test")
 public class PerimeterTriangleTest extends BaseTest {
 
     Triangle triangle;
@@ -19,17 +19,15 @@ public class PerimeterTriangleTest extends BaseTest {
     @SneakyThrows
     @BeforeEach
     void setUp() {
-        TriangleBody body = new TriangleBody("4;6;3");
-        Response<Triangle> response = service.createTriangle(body).execute();
-        triangle = response.body();
+        triangle = triangleServiceSteps.createTriangle("4", "6", "3").body();
     }
 
     @SneakyThrows
     @Test
+    @DisplayName("Check perimeter for the triangle")
     void trianglePerimeterTest() {
-        double expectedPerimeter = TriangleUtils.calculatePerimeter(triangle);
-        Response<PerimeterAreaResult> response = service.getTrianglePerimeter(triangle.getId()).execute();
-        assertThat(response).extracting(Response::code).isEqualTo(OK.getCode());
-        assertThat(response).extracting(Response::body).extracting(PerimeterAreaResult::getResult).isEqualTo(expectedPerimeter);
+        Response<PerimeterAreaResult> response = triangleServiceSteps.getTrianglePerimeter(triangle);
+        assertionsSteps.assertThatResponseStatusCodeIs(response.code(), OK);
+        assertionsSteps.assertThatPerimeterIs(response.body(), triangle, TriangleUtils.calculatePerimeter(triangle));
     }
 }

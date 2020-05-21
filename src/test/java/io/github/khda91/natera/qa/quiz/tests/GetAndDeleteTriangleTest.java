@@ -1,16 +1,16 @@
 package io.github.khda91.natera.qa.quiz.tests;
 
 import io.github.khda91.natera.qa.quiz.model.triangle.Triangle;
-import io.github.khda91.natera.qa.quiz.model.triangle.TriangleBody;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import retrofit2.Response;
 
 import static io.github.khda91.natera.qa.quiz.services.api.enums.StatusCode.NOT_FOUND;
 import static io.github.khda91.natera.qa.quiz.services.api.enums.StatusCode.OK;
-import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Get and Delete triangle test")
 public class GetAndDeleteTriangleTest extends BaseTest {
 
     Triangle expected;
@@ -18,25 +18,27 @@ public class GetAndDeleteTriangleTest extends BaseTest {
     @SneakyThrows
     @BeforeEach
     void createTriangle() {
-        TriangleBody triangleBody = new TriangleBody("4:6:3");
-        expected = service.createTriangle(triangleBody).execute().body();
+        expected = triangleServiceSteps.createTriangle("4", "6", "3").body();
     }
 
     @SneakyThrows
     @Test
+    @DisplayName("Get triangle")
     void getTriangleTest() {
-        Response<Triangle> response = service.getTriangle(expected.getId()).execute();
-        assertThat(response).extracting(Response::code).isEqualTo(OK.getCode());
-        assertThat(response).extracting(Response::body).isEqualTo(expected);
+        Response<Triangle> response = triangleServiceSteps.getTriangle(expected);
+        assertionsSteps.assertThatResponseStatusCodeIs(response.code(), OK);
+        assertionsSteps.assertThatTriangleEquals(response.body(), expected);
     }
 
     @SneakyThrows
     @Test
+    @DisplayName("Delete triangle")
     void deleteTriangleTest() {
-        Response<Void> deleteResponse = service.deleteTriangle(expected.getId()).execute();
-        assertThat(deleteResponse).extracting(Response::code).isEqualTo(OK.getCode());
-        Response<Triangle> getResponse = service.getTriangle(expected.getId()).execute();
-        assertThat(getResponse).extracting(Response::code).isEqualTo(NOT_FOUND.getCode());
+        Response<Void> deleteResponse = triangleServiceSteps.deleteTriangle(expected);
+        assertionsSteps.assertThatResponseStatusCodeIs(deleteResponse.code(), OK);
+
+        Response<Triangle> getResponse = triangleServiceSteps.getTriangle(expected);
+        assertionsSteps.assertThatResponseStatusCodeIs(getResponse.code(), NOT_FOUND);
     }
 
 

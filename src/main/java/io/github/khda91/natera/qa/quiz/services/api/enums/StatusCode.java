@@ -14,4 +14,5 @@ public enum StatusCode {
 
     int code;
     String error;
+
 }

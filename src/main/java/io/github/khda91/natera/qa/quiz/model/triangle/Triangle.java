@@ -10,6 +10,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Triangle {
 
     private String id;
