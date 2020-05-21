@@ -3,7 +3,7 @@
 ## How to run tests
 Invoke maven command from the source root
 ```bash
-mvn clean test -Denv=qa -Dapplication.user.token=<your_user_token>
+mvn clean verify -Denv=qa -Dapplication.user.token=<your_user_token>
 ```
 For the Allure report execute
 ```bash
